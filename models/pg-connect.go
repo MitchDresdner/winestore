@@ -13,19 +13,8 @@ type DB struct {
 	*sql.DB
 }
 
-func NewDB(dataSourceName string) (*DB, error) {
-	db, err := sql.Open("postgres", dataSourceName)
-	if err != nil {
-		return nil, err
-	}
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
-	return &DB{db}, nil
-}
-
 func Connect(dataSourceName string) (*DB, error) {
-	db, err:= sql.Open("postgres", dataSourceName)
+	db, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
 		return nil, err
 	}
@@ -42,4 +31,3 @@ func Close(db *DB) error {
 	err := db.Close()
 	return err
 }
-

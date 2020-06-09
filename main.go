@@ -5,74 +5,39 @@ import (
 	"github.com/mjd/winestore/models"
 	"github.com/mjd/winestore/util"
 	"log"
-	"net/http"
 )
 
 type Env struct {
 	db models.Datastore
 }
 
-func main () {
-	fmt.Println("Starting")
+func main() {
 
+	// 1 - Fetch database properties stored as YAML, decode secrets
 	connStr, err := util.FetchYAML()
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
 
-	// "postgres://goland:goland@localhost/wines"
+	// Connect to Postgres DB
 	db, err := models.Connect(connStr)
 	if err != nil {
 		log.Panic(err)
 	}
 
+	// Save db handle for dependency injecting into supporting routines
 	env := &Env{db}
 
+	// Load some initial sample rows, truncates existing
 	err = models.LoadDb(db)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
 
+	// Retrieve and display rows created
 	env.getAllWine()
 
-	//http.HandleFunc("/books", env.booksIndex)
-	//http.ListenAndServe(":3000", nil)
-
-	//wines, err := env.db.AllWines()
-	//if err != nil {
-	//	log.Fatalf("error: %v", err)
-	//}
-	//
-	//wine, e := env.db.WineById()
-	//if e != nil {
-	//	log.Fatalf("error: %v", e)
-	//}
-	//fmt.Println("You selected %s", wine.Product)
-
-	//for _, wine := range wines {
-	//	fmt.Printf("%-25s %-69s Today Only $%4.2f\n", wine.Product, wine.Description, wine.Price)
-	//}
-
-	//env.getAllWine(env)
-
 	err = models.Close(db)
-
-	fmt.Println("Exit")
-}
-
-func (env *Env) booksIndex(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		http.Error(w, http.StatusText(405), 405)
-		return
-	}
-	wines, err := env.db.AllWines()
-	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
-	}
-	for _, wine := range wines {
-		fmt.Fprintf(w, "%s, %s, £%.2f\n", wine.Product, wine.Description, wine.Price)
-	}
 }
 
 func (env *Env) getAllWine() {
@@ -82,30 +47,7 @@ func (env *Env) getAllWine() {
 		log.Fatalf("error: %v", err)
 	}
 
-	//Display results to console
-	//fmt.Printf("%-25s %-69s Today Only $%4.2f\n",wine.product, wine.description, wine.priceprice)
 	for _, wine := range wines {
 		fmt.Printf("%-25s %-69s Today Only $%4.2f\n", wine.Product, wine.Description, wine.Price)
 	}
 }
-
-func DeprecateMe() {
-
-	fmt.Println("Starting")
-
-	//models.MyModel()
-	//models.A()
-	//models.B()
-	//models.C()
-	//
-	//models.D()
-	//models.E()
-	//models.F()
-	//
-	//view.MyView()
-	//controller.MyController()
-
-	fmt.Println("Exit")
-}
-
-
