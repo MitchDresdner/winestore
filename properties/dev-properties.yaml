@@ -1,0 +1,8 @@
+db:
+  postgress:
+    user: "goland"
+    dbname: "goland"
+    password: "![e22368dfc321a77dd097892778c2c9464d0512693f6e7b55159ccbc4d60b5357e20f]"
+    host: "localhost"
+    port: "30432"
+    sslmode: "disable"
