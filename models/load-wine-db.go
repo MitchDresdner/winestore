@@ -39,7 +39,7 @@ func LoadDb(db *DB) error {
 	if checkDatabase == "" {
 		createSQL := "CREATE TABLE public.winetbl (id SERIAL PRIMARY KEY,product character varying,pdesc character varying,price decimal);"
 		if _, err = db.Query(createSQL); err != nil {
-			panic(err)
+			return err
 		}
 		fmt.Println("Wine Database Created")
 	}
@@ -56,7 +56,7 @@ func LoadDb(db *DB) error {
 
 	// Start with a clean slate
 	if _, err = db.Exec(`TRUNCATE TABLE winetbl`); err != nil {
-		panic(err)
+		return err
 	}
 
 	// Insert static entries into database

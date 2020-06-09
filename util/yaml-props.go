@@ -3,7 +3,7 @@ package util
 import (
 	"encoding/hex"
 	"fmt"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -44,7 +44,7 @@ func FetchYAML() (string, error) {
 				return "", fmt.Errorf("error: %v", e)
 			}
 
-			fmt.Printf("found %s\n", decoded)
+			// fmt.Printf("found %s\n", decoded)
 			// Replace encoded map value with the decoded secret
 			v = string(decoded)
 			config.Db.Pg[k] = v
